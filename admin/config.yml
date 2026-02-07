@@ -91,7 +91,7 @@ collections:
               - {label: "სახელი", name: "name", widget: "string"}
               - {label: "ფასი", name: "price", widget: "string"}
 
-  - name: "gallery"
+- name: "gallery"
   label: "გალერეა"
   files:
     - name: "gallery"
@@ -101,3 +101,4 @@ collections:
         - {label: "სათაური", name: "title", widget: "string"}
         - {label: "ფოტო", name: "image", widget: "image"}
         - {label: "ადგილი", name: "order", widget: "number", default: 1}
+
