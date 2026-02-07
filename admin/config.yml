@@ -90,15 +90,14 @@ collections:
             fields:
               - {label: "სახელი", name: "name", widget: "string"}
               - {label: "ფასი", name: "price", widget: "string"}
-
-- name: "gallery"
-  label: "გალერეა"
-  files:
-    - name: "gallery"
-      label: "გალერეა"
-      file: "content/gallery/gallery.json"
-      fields:
-        - {label: "სათაური", name: "title", widget: "string"}
-        - {label: "ფოტო", name: "image", widget: "image"}
-        - {label: "ადგილი", name: "order", widget: "number", default: 1}
+              
+  - name: "gallery"
+    label: "გალერეა"
+    folder: "content/gallery"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "სათაური", name: "title", widget: "string"}
+      - {label: "ფოტო", name: "image", widget: "image"}
+      - {label: "ადგილი", name: "order", widget: "number", default: 1}
 
