@@ -925,15 +925,18 @@ if (window.netlifyIdentity) {
     <div id="blog-posts"></div>
 
 <script>
-fetch('/admin/content/posts.json')
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById('blog-posts');
-    data.forEach(post => {
-      const div = document.createElement('div');
-      div.innerHTML = `<h3>${post.title}</h3><p>${post.body}</p>`;
-      container.appendChild(div);
-    });
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('/admin/content/posts.json') // CMS-ის მიერ შექმნილი JSON
+      .then(res => res.json())
+      .then(posts => {
+        const container = document.getElementById('cms-content');
+        posts.forEach(post => {
+          const div = document.createElement('div');
+          div.innerHTML = `<h3>${post.title}</h3><p>${post.body}</p>`;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => console.error("CMS content fetch error:", err));
   });
 </script>
 
