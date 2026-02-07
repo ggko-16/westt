@@ -1,0 +1,31 @@
+
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "img/uploads"
+public_folder: "/img/uploads"
+
+collections:
+  - name: "gallery"
+    label: "გალერეა"
+    folder: "content/gallery"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "სათაური", name: "title", widget: "string" }
+      - { label: "ფოტო", name: "image", widget: "image" }
+
+  - name: "prices"
+    label: "ფასები"
+    files:
+      - label: "ფასების სია"
+        name: "price_list"
+        file: "content/prices.yml"
+        fields:
+          - label: "ფოტო სერვისები"
+            name: "photo_services"
+            widget: "list"
+            fields:
+              - { label: "დასახელება", name: "name", widget: "string" }
+              - { label: "ფასი", name: "price", widget: "string" }
