@@ -1,0 +1,14 @@
+{
+  "members": [
+    {
+      "name": "გიორგი ჯიჯიეშვილი",
+      "position": "დამფუძნებელი",
+      "photo": "/img/uploads/team1.jpg"
+    },
+    {
+      "name": "საბა ციცვიძე",
+      "position": "დამფუძნებელი",
+      "photo": "/img/uploads/team2.jpg"
+    }
+  ]
+}
