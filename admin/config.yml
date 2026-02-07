@@ -91,12 +91,44 @@ collections:
               - {label: "სახელი", name: "name", widget: "string"}
               - {label: "ფასი", name: "price", widget: "string"}
 
-  - name: "gallery"
-    label: "გალერეა"
-    folder: "content/gallery/gallery.json"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - {label: "სათაური", name: "title", widget: "string"}
-      - {label: "ფოტო", name: "image", widget: "image"}
-      - {label: "ადგილი", name: "order", widget: "number", default: 1}
+ - name: "gallery"
+  label: "გალერეა"
+  folder: "content/gallery"
+  create: true
+  slug: "{{slug}}"
+  fields:
+    - label: "სათაური"
+      name: "title"
+      widget: "string"
+    - label: "ფოტო"
+      name: "image"
+      widget: "image"
+    - label: "აღწერა"
+      name: "description"
+      widget: "text"
+      required: false
+    - label: "კატეგორია"
+      name: "category"
+      widget: "select"
+      options: ["პოსტერები", "ფოტოები", "დიზაინი"]
+      required: false
+    - label: "თარიღი"
+      name: "date"
+      widget: "datetime"
+      required: false
+    - label: "Alt ტექსტი"
+      name: "alt_text"
+      widget: "string"
+      required: false
+    - label: "ადგილი"
+      name: "order"
+      widget: "number"
+      default: 1
+    - label: "გამოაჩინოს საიტზე"
+      name: "visible"
+      widget: "boolean"
+      default: true
+    - label: "ვიდეო/მულტიმედია URL"
+      name: "media_url"
+      widget: "string"
+      required: false
