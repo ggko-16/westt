@@ -93,7 +93,7 @@ collections:
 
   - name: "gallery"
     label: "გალერეა"
-    folder: "content/gallery"
+    folder: "content/gallery/gallery.json"
     create: true
     slug: "{{slug}}"
     fields:
