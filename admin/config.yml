@@ -1,31 +1,77 @@
-
 backend:
   name: git-gateway
   branch: main
 
-media_folder: "img/uploads"
-public_folder: "/img/uploads"
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
 collections:
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "Contact Info"
+        name: "contact"
+        file: "content/contact.json"
+        fields:
+          - {label: "Phone", name: "phone", widget: "string"}
+          - {label: "Email", name: "email", widget: "string"}
+          - {label: "Address", name: "address", widget: "string"}
+          - {label: "Facebook URL", name: "facebook", widget: "string"}
+      
+      - label: "Team Members"
+        name: "team"
+        file: "content/team.json"
+        fields:
+          - label: "Team"
+            name: "members"
+            widget: "list"
+            fields:
+              - {label: "Name", name: "name", widget: "string"}
+              - {label: "Position", name: "position", widget: "string"}
+              - {label: "Photo", name: "photo", widget: "image", required: false}
+
   - name: "gallery"
-    label: "გალერეა"
+    label: "Gallery"
     folder: "content/gallery"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "სათაური", name: "title", widget: "string" }
-      - { label: "ფოტო", name: "image", widget: "image" }
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Order", name: "order", widget: "number", default: 1}
 
   - name: "prices"
-    label: "ფასები"
+    label: "Prices"
     files:
-      - label: "ფასების სია"
-        name: "price_list"
-        file: "content/prices.yml"
+      - label: "Photo Services"
+        name: "photo_services"
+        file: "content/prices/photo.json"
         fields:
-          - label: "ფოტო სერვისები"
-            name: "photo_services"
+          - label: "Services"
+            name: "services"
             widget: "list"
             fields:
-              - { label: "დასახელება", name: "name", widget: "string" }
-              - { label: "ფასი", name: "price", widget: "string" }
+              - {label: "Service Name", name: "name", widget: "string"}
+              - {label: "Price", name: "price", widget: "string"}
+      
+      - label: "Printing Services"
+        name: "printing_services"
+        file: "content/prices/printing.json"
+        fields:
+          - label: "Services"
+            name: "services"
+            widget: "list"
+            fields:
+              - {label: "Service Name", name: "name", widget: "string"}
+              - {label: "Price", name: "price", widget: "string"}
+      
+      - label: "Frames"
+        name: "frames"
+        file: "content/prices/frames.json"
+        fields:
+          - label: "Services"
+            name: "services"
+            widget: "list"
+            fields:
+              - {label: "Service Name", name: "name", widget: "string"}
+              - {label: "Price", name: "price", widget: "string"}
