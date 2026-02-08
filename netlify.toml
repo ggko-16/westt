@@ -1,0 +1,56 @@
+# Netlify Configuration File
+
+[build]
+  publish = "."
+  command = "echo 'No build command needed'"
+
+# Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security Headers
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    
+    # Content Security Policy (more permissive than meta tag for compatibility)
+    Content-Security-Policy = '''
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://identity.netlify.com https://cdn.jsdelivr.net https://api.github.com;
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: https: http:;
+      font-src 'self' data:;
+      connect-src 'self' https://api.github.com https://identity.netlify.com;
+      frame-src https://docs.google.com;
+      base-uri 'self';
+      form-action 'self' https://docs.google.com;
+    '''
+    
+    # Cache Control
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache busting for HTML
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Cache for images
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache for JSON content files
+[[headers]]
+  for = "/content/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+
+# Admin panel
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
