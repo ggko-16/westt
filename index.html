@@ -234,7 +234,7 @@ async function loadTeam() {
     const data = await loadJSON('/content/team.json');
     if (data && data.members) {
         const grid = document.getElementById('team-grid');
-        grid.innerHTML = ''; // Clear existing
+        grid.innerHTML = '';
         data.members.forEach(m => {
             const div = document.createElement('div');
             div.classList.add('team-member');
@@ -252,42 +252,70 @@ async function loadTeam() {
 
 async function loadGallery() {
     const grid = document.getElementById('gallery-grid');
-    grid.innerHTML = ''; // Clear existing
+    grid.innerHTML = '';
     
-    try {
-        // Try to load gallery items from content/gallery folder
-        // Netlify CMS creates files like content/gallery/item-1.json
-        const response = await fetch('/content/gallery/');
-        
-        // Fallback: Show placeholder if no gallery items
-        if (!response.ok) {
-            for (let i = 1; i <= 6; i++) {
-                const div = document.createElement('div');
-                div.classList.add('gallery-item');
-                div.innerHTML = `პოსტერი ${i}`;
-                grid.appendChild(div);
+    // Try to load all JSON files from content/gallery
+    const galleryItems = [];
+    
+    // Try fetching common filenames (Netlify CMS creates files like 2024-01-15-image-1.json)
+    for (let i = 1; i <= 50; i++) {
+        try {
+            // Try different potential file naming patterns
+            const patterns = [
+                `/content/gallery/${i}.json`,
+                `/content/gallery/item-${i}.json`,
+                `/content/gallery/image-${i}.json`
+            ];
+            
+            for (const pattern of patterns) {
+                const data = await loadJSON(pattern);
+                if (data && data.image) {
+                    galleryItems.push(data);
+                    break;
+                }
             }
-            return;
+        } catch (e) {
+            // File doesn't exist, continue
         }
-        
-        // If we have gallery items, load them
-        // This will be populated when you add items via Admin Panel
-        const files = await response.json();
-        for (const file of files) {
-            const item = await loadJSON(`/content/gallery/${file.name}`);
-            if (item && item.image) {
-                const div = document.createElement('div');
-                div.classList.add('gallery-item');
-                div.innerHTML = `<img src="${item.image}" alt="${item.title || 'Gallery Item'}">`;
-                grid.appendChild(div);
+    }
+    
+    // Also try to fetch any files that match date pattern (YYYY-MM-DD-*)
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear - 1; year <= currentYear; year++) {
+        for (let month = 1; month <= 12; month++) {
+            for (let day = 1; day <= 31; day++) {
+                const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                for (let i = 1; i <= 10; i++) {
+                    try {
+                        const data = await loadJSON(`/content/gallery/${dateStr}-${i}.json`);
+                        if (data && data.image) {
+                            galleryItems.push(data);
+                        }
+                    } catch (e) {
+                        // Continue
+                    }
+                }
             }
         }
-    } catch (error) {
-        // Fallback placeholder
+    }
+    
+    // Sort by order field if exists
+    galleryItems.sort((a, b) => (a.order || 999) - (b.order || 999));
+    
+    // Display gallery items
+    if (galleryItems.length > 0) {
+        galleryItems.forEach(item => {
+            const div = document.createElement('div');
+            div.classList.add('gallery-item');
+            div.innerHTML = `<img src="${item.image}" alt="${item.title || 'Gallery Item'}" style="width:100%;height:100%;object-fit:cover;">`;
+            grid.appendChild(div);
+        });
+    } else {
+        // Show placeholders if no items found
         for (let i = 1; i <= 6; i++) {
             const div = document.createElement('div');
             div.classList.add('gallery-item');
-            div.innerHTML = `ფოტო ${i}`;
+            div.innerHTML = `პოსტერი ${i}`;
             grid.appendChild(div);
         }
     }
@@ -295,7 +323,7 @@ async function loadGallery() {
 
 async function loadPrices() {
     const container = document.getElementById('price-tables');
-    container.innerHTML = ''; // Clear existing
+    container.innerHTML = '';
     
     const files = [
         { path: '/content/prices/photo.json', title: '📸 ფოტო სერვისები' },
