@@ -30,31 +30,6 @@ collections:
               - {label: "პოზიცია", name: "position", widget: "string"}
               - {label: "ფოტო", name: "photo", widget: "image", required: false}
 
-  - name: "services"
-    label: "სერვისები"
-    files:
-      - label: "ფოტო სერვისები"
-        name: "photo_services"
-        file: "content/services/photo.json"
-        fields:
-          - label: "სერვისები"
-            name: "services"
-            widget: "list"
-            fields:
-              - {label: "სახელი", name: "name", widget: "string"}
-              - {label: "აღწერა", name: "description", widget: "text"}
-
-      - label: "ბეჭდვა/სკანირება"
-        name: "printing_services"
-        file: "content/services/printing.json"
-        fields:
-          - label: "სერვისები"
-            name: "services"
-            widget: "list"
-            fields:
-              - {label: "სახელი", name: "name", widget: "string"}
-              - {label: "აღწერა", name: "description", widget: "text"}
-
   - name: "prices"
     label: "ფასები"
     files:
@@ -95,9 +70,10 @@ collections:
     label: "გალერეა"
     folder: "content/gallery"
     create: true
-    slug: "{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "json"
+    format: "json"
     fields:
       - {label: "სათაური", name: "title", widget: "string"}
       - {label: "ფოტო", name: "image", widget: "image"}
-      - {label: "ადგილი", name: "order", widget: "number", default: 1}
-
+      - {label: "რიგითობა", name: "order", widget: "number", default: 1, value_type: "int"}
