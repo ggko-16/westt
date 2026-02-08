@@ -226,7 +226,7 @@ async function loadGallery() {
     
     try {
         // Use GitHub API to list all files in content/gallery folder
-        const response = await axios.get('https://api.github.com/repos/ggko-16/westface/contents/content/gallery');
+        const response = await axios.get('https://api.github.com/repos/ggko-16/westt/contents/content/gallery');
         
         if (response.data && Array.isArray(response.data)) {
             const galleryItems = [];
