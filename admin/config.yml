@@ -1,0 +1,80 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Media uploads
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# Collections
+  - name: "settings"
+    label: "საიტის პარამეტრები"
+    files:
+      - label: "კონტაქტი"
+        name: "contact"
+        file: "content/contact.json"
+        fields:
+          - {label: "ტელეფონი", name: "phone", widget: "string"}
+          - {label: "ელ-ფოსტა", name: "email", widget: "string"}
+          - {label: "მისამართი", name: "address", widget: "string"}
+          - {label: "Facebook URL", name: "facebook", widget: "string"}
+
+      - label: "გუნდი"
+        name: "team"
+        file: "content/team.json"
+        fields:
+          - label: "წევრები"
+            name: "members"
+            widget: "list"
+            fields:
+              - {label: "სახელი", name: "name", widget: "string"}
+              - {label: "პოზიცია", name: "position", widget: "string"}
+              - {label: "ფოტო", name: "photo", widget: "image", required: false}
+
+  - name: "prices"
+    label: "ფასები"
+    files:
+      - label: "ფოტო სერვისები"
+        name: "photo_prices"
+        file: "content/prices/photo.json"
+        fields:
+          - label: "სერვისები"
+            name: "services"
+            widget: "list"
+            fields:
+              - {label: "სახელი", name: "name", widget: "string"}
+              - {label: "ფასი", name: "price", widget: "string"}
+
+      - label: "ბეჭდვა/სკანირება"
+        name: "printing_prices"
+        file: "content/prices/printing.json"
+        fields:
+          - label: "სერვისები"
+            name: "services"
+            widget: "list"
+            fields:
+              - {label: "სახელი", name: "name", widget: "string"}
+              - {label: "ფასი", name: "price", widget: "string"}
+
+      - label: "ჩარჩოები"
+        name: "frames"
+        file: "content/prices/frames.json"
+        fields:
+          - label: "სერვისები"
+            name: "services"
+            widget: "list"
+            fields:
+              - {label: "სახელი", name: "name", widget: "string"}
+              - {label: "ფასი", name: "price", widget: "string"}
+              
+  - name: "gallery"
+    label: "გალერეა"
+    folder: "content/gallery"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - {label: "სათაური", name: "title", widget: "string"}
+      - {label: "ფოტო", name: "image", widget: "image"}
+      - {label: "რიგითობა", name: "order", widget: "number", default: 1, value_type: "int"}

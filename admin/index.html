@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WestFace Admin</title>
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    /* Loading indicator */
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      z-index: 9999;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    
+    /* Error display */
+    #error-display {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      max-width: 500px;
+      text-align: center;
+      z-index: 10000;
+    }
+    
+    .error-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+    
+    .error-title {
+      font-size: 24px;
+      color: #e53e3e;
+      margin-bottom: 10px;
+    }
+    
+    .error-message {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .error-steps {
+      text-align: left;
+      background: #f7fafc;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    
+    .error-steps ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    
+    .error-steps li {
+      margin: 5px 0;
+    }
+    
+    .retry-button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+    
+    .retry-button:hover {
+      background: #5568d3;
+    }
+  </style>
+
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">იტვირთება Admin Panel...</div>
+  </div>
+
+  <!-- Error Display -->
+  <div id="error-display">
+    <div class="error-icon">⚠️</div>
+    <div class="error-title">Admin Panel ვერ ჩაიტვირთა</div>
+    <div class="error-message">
+      <p id="error-text">გთხოვთ შეამოწმოთ:</p>
+    </div>
+    <div class="error-steps">
+      <ol>
+        <li><strong>Netlify Identity</strong> enabled არის თუ არა</li>
+        <li><strong>Git Gateway</strong> enabled არის თუ არა</li>
+        <li>გაქვთ თუ არა <strong>Admin Invitation</strong></li>
+      </ol>
+      <p style="margin-top: 10px; font-size: 14px;">
+        დეტალური ინსტრუქცია: <a href="/ADMIN_FIX_GUIDE.md" target="_blank">ADMIN_FIX_GUIDE.md</a>
+      </p>
+    </div>
+    <button class="retry-button" onclick="location.reload()">თავიდან სცადე</button>
+  </div>
+
+  <!-- Netlify CMS Root -->
+  <div id="nc-root"></div>
+
+  <!-- Netlify CMS Script -->
+  <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+
+  <!-- Initialization & Error Handling -->
+  <script>
+    // Hide loading screen when CMS loads
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const loading = document.getElementById('loading');
+        if (loading) {
+          loading.style.display = 'none';
+        }
+      }, 2000);
+    });
+
+    // Error handling
+    window.addEventListener('error', function(e) {
+      console.error('CMS Error:', e);
+      showError('ტექნიკური შეცდომა: ' + e.message);
+    });
+
+    function showError(message) {
+      const loading = document.getElementById('loading');
+      const errorDisplay = document.getElementById('error-display');
+      const errorText = document.getElementById('error-text');
+      
+      if (loading) loading.style.display = 'none';
+      if (errorDisplay) {
+        errorDisplay.style.display = 'block';
+        if (errorText && message) {
+          errorText.textContent = message;
+        }
+      }
+    }
+
+    // Check if Identity is loaded
+    setTimeout(function() {
+      if (typeof netlifyIdentity === 'undefined') {
+        showError('Netlify Identity ვერ ჩაიტვირთა. შეამოწმეთ ინტერნეტ კავშირი.');
+      }
+    }, 5000);
+
+    // Netlify Identity Event Handlers
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        console.log('Identity initialized:', user ? 'User logged in' : 'No user');
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+
+      window.netlifyIdentity.on("error", err => {
+        console.error('Identity error:', err);
+        showError('ავტორიზაციის შეცდომა: ' + err.message);
+      });
+    }
+
+    // Debug info in console
+    console.log('%c🔐 WestFace Admin Panel', 'font-size: 20px; color: #667eea; font-weight: bold;');
+    console.log('📍 Location:', window.location.href);
+    console.log('🔧 Netlify CMS Version:', typeof CMS !== 'undefined' ? 'Loaded' : 'Not loaded');
+    console.log('🔐 Netlify Identity:', typeof netlifyIdentity !== 'undefined' ? 'Loaded' : 'Not loaded');
+    
+    // Help message
+    console.log('%cთუ პრობლემა გაქვთ:', 'font-weight: bold; color: #e53e3e;');
+    console.log('1. შეამოწმე Netlify Dashboard → Identity → Enable Identity');
+    console.log('2. შეამოწმე Git Gateway → Enable Git Gateway');
+    console.log('3. დაადასტურე რომ გაქვს Admin Invitation');
+    console.log('4. წაიკითხე ADMIN_FIX_GUIDE.md');
+  </script>
+
+</body>
+</html>

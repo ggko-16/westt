@@ -1,0 +1,28 @@
+{
+  "name": "WestFace - ფოტოების ბეჭდვა",
+  "short_name": "WestFace",
+  "description": "პროფესიონალური ფოტოების ბეჭდვა, პოსტერების დამზადება და დიზაინის მომსახურება თბილისში",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/westf.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/westf.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["photography", "business", "productivity"],
+  "lang": "ka-GE",
+  "dir": "ltr",
+  "scope": "/"
+}
